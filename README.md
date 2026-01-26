@@ -60,5 +60,6 @@ Your task is to deploy this application to a Kubernetes cluster in your local en
    - `@bgroupe`
    - `@heruscode`
    - `@tleung999`
+   - `@mustybatz`
 
 The estimated effort of this challenge is approximately 4 hours. Feel free to include any additional notes about how you would improve this as if it were your job to maintain it in a production environment. Submit a link to your private repository.
