@@ -41,6 +41,8 @@ dot -Tpng architecture.dot -o architecture.png
 
 ## How to complete this challenge
 
+**Please complete this challenge without the assistance of AI. Our goal is to assess your unique skills and strengths, and evaluate your real-world problem solving capability.**
+
 Your task is to deploy this application to a Kubernetes cluster in your local environment and provide instructions for reproduction on our own computers. The deployment should meet the following criteria:
 
 1. **Kubernetes Deployment**: Deploy all components to a local Kubernetes cluster. You are free to choose any Kubernetes flavor that you are comfortable with, like `minikube`, `k3s`, `kind`, etc.
