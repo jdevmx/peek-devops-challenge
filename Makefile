@@ -21,7 +21,7 @@ plan:
 confirm:
 	@echo "Are you sure you want to apply changes to $(ENVIRONMENT)? [y/N] " && read answer && [ $${answer:-N} = y ]
 
-apply: confirm
+apply: # confirm: Use confirm only if want the user confirm changes. Keep it commented if want to deploy automatically without user intervention.
 	cd $(TF_DIR) && terraform apply -auto-approve
 
 destroy: init
