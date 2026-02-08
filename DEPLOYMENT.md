@@ -27,6 +27,12 @@ The deployment is automated using a `Makefile` that handles building Docker imag
 - **`make run-pipeline`**: Executes both `build` and `run-terraform` in sequence. This is the recommended way to deploy the entire stack.
 - **`make destroy`**: Tears down the infrastructure and deletes the Terraform workspace.
 
+### Assumptions
+
+- Terraform is installed locally.
+- Docker is installed locally.
+- The kubernetes cluster is configured as the default context.
+
 To deploy everything at once, run:
 ```bash
 make run-pipeline
