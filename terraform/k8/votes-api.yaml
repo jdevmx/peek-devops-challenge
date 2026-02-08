@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: votes-api
+  namespace: peek
+  labels:
+    app: votes-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: votes-api
+  template:
+    metadata:
+      name: votes-api
+      labels:
+        app: votes-api
+    spec:
+      containers:
+        - name: votes-api
+          image: peek-votes-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: votes-api-service
+  namespace: peek
+  labels:
+    app: votes-api
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: votes-api
+  type: NodePort

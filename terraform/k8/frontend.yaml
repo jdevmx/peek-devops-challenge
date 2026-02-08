@@ -40,4 +40,19 @@ spec:
                   name: votes-ui-secrets
                   key: VOTES_API_PORT
       restartPolicy: Always
-      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: peek
+  labels:
+    app: frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: frontend
