@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: votes-api-service
+  namespace: peek
+  labels:
+    app: votes-api
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: votes-api
+  type: NodePort
