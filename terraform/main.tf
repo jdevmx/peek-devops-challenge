@@ -10,7 +10,7 @@ resource "kubernetes_namespace_v1" "peek_namespace" {
 
 locals {
   k8_files = setsubtract(
-    fileset("${path.module}/k8", "*.yaml")
+    fileset("${path.module}/k8", "*.yaml"),[]
   )
 }
 
