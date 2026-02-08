@@ -23,6 +23,42 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: postgres-db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: postgres-password
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: POSTGRES_HOST
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: PORT
+            - name: OPTION_A
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: OPTION_A
+            - name: OPTION_B
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: OPTION_B
       restartPolicy: Always
 
 ---
