@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: peek
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: peek-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: PORT
+            - name: VOTES_API_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: VOTES_API_HOST
+            - name: VOTES_API_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: votes-ui-secrets
+                  key: VOTES_API_PORT
+      restartPolicy: Always
+      
