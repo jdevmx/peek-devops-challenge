@@ -62,6 +62,8 @@ File: `terraform/k8/votes-ingress.yaml`
 
 1. Manage Secrets using an external vault (Hashicorp Vault, AWS Secrets Manager, among others)
 2. Unless Node 16 is strictly required, I would recommend using the latest stable Node version
+3. Implement Automated Testing. At least unit tests for the API. 80% code coverage.
+4. Configure Terraform state storage securely. Versioned S3 Bucket and DynamoDB Table. 
 
 ## 5. Findings
 
