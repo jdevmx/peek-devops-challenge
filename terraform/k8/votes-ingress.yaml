@@ -10,14 +10,14 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/?(.*)
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:
                 name: votes-api-service
                 port:
                   number: 8080
-          - path: /()(.*)
+          - path: /
             pathType: ImplementationSpecific
             backend:
               service:

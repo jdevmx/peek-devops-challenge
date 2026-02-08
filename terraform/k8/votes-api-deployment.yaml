@@ -20,6 +20,10 @@ spec:
         - name: votes-api
           image: peek-votes-api:latest
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
           ports:
             - containerPort: 8080
               protocol: TCP
