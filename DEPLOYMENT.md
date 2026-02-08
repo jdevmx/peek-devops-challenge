@@ -6,59 +6,67 @@ This document describes how to deploy the application in a local Kubernetes envi
 
 The application is deployed within a dedicated namespace called `peek`. This helps in isolating the application resources from other apps in the cluster.
 
-The namespace is defined in: `terraform/k8/namespace.yaml`
+The namespace is defined in: `terraform/main.tf`
 
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: peek
+```hcl
+resource "kubernetes_namespace_v1" "peek_namespace" {
+  metadata {
+    name = "peek"
+  }
+}
 ```
 
-## 2. Secrets Management
+## 2. Infrastructure and App Deployment (Makefile)
 
-For security best practices, sensitive information such as environment variables for the UI are encrypted using **Sealed Secrets**.
+The deployment is automated using a `Makefile` that handles building Docker images and applying Terraform configurations.
 
-### Setup Sealed Secrets Controller
+### Main Commands
 
-Before applying deployment, you need the Sealed Secrets controller installed in your cluster. You can use the provided script:
+- **`make build`**: Builds both UI and API Docker images.
+- **`make run-terraform`**: Initializes Terraform, selects the workspace, and applies the Kubernetes manifests.
+- **`make run-pipeline`**: Executes both `build` and `run-terraform` in sequence. This is the recommended way to deploy the entire stack.
+- **`make destroy`**: Tears down the infrastructure and deletes the Terraform workspace.
 
+To deploy everything at once, run:
 ```bash
-./local-env/set-k8.sh
+make run-pipeline
 ```
 
-This script uses Helm to install the `sealed-secrets` controller into the `kube-system` namespace.
+## 3. Kubernetes Resources
 
-## 3. Frontend Deployment
+Terraform automatically applies all YAML files located in `terraform/k8/`.
 
-The frontend of the application is defined as a Kubernetes Deployment. It manages the lifecycle of the UI containers.
+### Frontend Deployment
+File: `terraform/k8/ui-deployment.yaml`
+- **Image:** `peek-votes-ui:latest`
+- **Service:** `ui-service.yaml` (Port 80)
+- **Secrets:** `ui-secrets.yaml`
 
-File: `terraform/k8/frontend.yaml`
+### Backend Deployment
+File: `terraform/k8/votes-api-deployment.yaml`
+- **Image:** `peek-votes-api:latest`
+- **Service:** `votes-api-service.yaml` (Port 8080)
+- **Secrets:** `api-secrets.yaml`
 
-### Key Components
+### Database
+File: `terraform/k8/postgres-deployment.yaml`
+- **Image:** `postgres:15-alpine`
+- **Service:** `postgres-service.yaml` (Port 5432)
+- **Secrets:** `postgres-secrets.yaml`
 
-- **Replicas:** Set to `1` by default for local environment.
-- **Image:** Uses `peek-frontend:latest`.
-- **Environment Variables:** The deployment consumes secrets from the `votes-ui-secrets` Secret (which is decrypted from the `SealedSecret`).
+### Ingress Configuration
+File: `terraform/k8/votes-ingress.yaml`
+- Configures an NGINX Ingress to route traffic to the UI and API services.
 
-The following environment variables are injected into the container:
-- `PORT`: The port the UI server
-- `VOTES_API_HOST`: The host address of the backend API
-- `VOTES_API_PORT`: The port of the backend API
-
-### 4. Backend Deployment
-
-#### TODO: Add backend deployment
-
-### 5. Ingress Configuration
-
-#### TODO: Add ingress configuration
-
-### 6. Production Environment Improvements
+## 4. Production Environment Improvements
 
 1. Manage Secrets using an external vault (Hashicorp Vault, AWS Secrets Manager, among others)
 2. Unless Node 16 is strictly required, I would recommend using the latest stable Node version
 
-### Applying the Deployment
+## 5. Findings
 
-#### TODO: Add deployment commands using IaC ( Terraform )
+1) UI: The API Port value is hardcoded app.js. Fixed to point to the correct port.
+2) API: insert query issue: Database error: relation "vote" does not exist
+LINE 1: INSERT INTO vote (id, vote) VALUES ('7gdxaxt0smle8uhd5', 'b'...
+   
+    The correct table name is "votes" instead of "vote"
