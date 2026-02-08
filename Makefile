@@ -1,5 +1,13 @@
 TF_DIR=terraform/
+UI_DIR=votes-ui
+API_DIR=votes-api
 ENVIRONMENT=local
+
+build-ui:
+	cd $(UI_DIR) && docker build -t peek-votes-ui .
+
+build-api:
+	cd $(API_DIR) && docker build -t peek-votes-api .
 
 init:
 	cd $(TF_DIR) && terraform init
@@ -18,5 +26,9 @@ apply: confirm
 
 destroy: init
 	cd $(TF_DIR) && terraform destroy && terraform workspace select default && terraform workspace delete $(ENVIRONMENT)
-	
-run: init setWorkspace plan apply
+
+build: build-ui build-api
+
+run-terraform: init setWorkspace plan apply
+
+run-pipeline: build run-terraform

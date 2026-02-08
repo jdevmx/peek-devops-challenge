@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: votes-ui
   namespace: peek
   labels:
-    app: frontend
+    app: votes-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: votes-ui
   template:
     metadata:
-      name: frontend
+      name: votes-ui
       labels:
-        app: frontend
+        app: votes-ui
     spec:
       containers:
-        - name: frontend
-          image: peek-frontend:latest
+        - name: votes-ui
+          image: peek-votes-ui:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

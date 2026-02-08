@@ -42,21 +42,21 @@ spec:
             - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
-                  name: votes-ui-secrets
+                  name: votes-api-secrets
                   key: POSTGRES_HOST
             - name: PORT
               valueFrom:
                 secretKeyRef:
-                  name: votes-ui-secrets
+                  name: votes-api-secrets
                   key: PORT
             - name: OPTION_A
               valueFrom:
                 secretKeyRef:
-                  name: votes-ui-secrets
+                  name: votes-api-secrets
                   key: OPTION_A
             - name: OPTION_B
               valueFrom:
                 secretKeyRef:
-                  name: votes-ui-secrets
+                  name: votes-api-secrets
                   key: OPTION_B
       restartPolicy: Always
